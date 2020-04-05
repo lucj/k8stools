@@ -31,3 +31,10 @@ $ docker run -ti \
   lucj/k8stools:TAG
 ```
 
+Once in the shell, you can run any *kubectl* commands against the cluster corresponding to the kubeconfig file provided.
+
+The great *k9s* tool is available, just run it with
+
+```
+$ k9s
+```

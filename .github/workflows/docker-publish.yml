@@ -81,6 +81,7 @@ jobs:
           echo VERSION=$VERSION
 
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker tag $IMAGE_NAME kalidasya/k8stools:$VERSION
           docker push $IMAGE_ID:$VERSION
           docker push kalidasya/k8stools:$VERSION
 

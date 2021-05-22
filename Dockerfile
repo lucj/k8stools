@@ -1,10 +1,13 @@
 FROM ubuntu:18.04
 
 # Tools versions
-ARG KUBECTL_VERSION=1.18.0
-ARG HELM2_VERSION=2.16.3
-ARG HELM3_VERSION=3.1.0
-ARG K9S_VERSION=0.19.0
+# https://dl.k8s.io/release/stable.txt
+ARG KUBECTL_VERSION=1.21.1
+# https://github.com/helm/helm/releases
+ARG HELM2_VERSION=2.17.0
+ARG HELM3_VERSION=3.5.4
+# https://github.com/derailed/k9s/releases
+ARG K9S_VERSION=0.24.10
 
 # Install utilities
 RUN apt-get update -y && apt-get install -y curl jq ca-certificates git vim bash-completion
@@ -27,7 +30,7 @@ RUN curl https://raw.githubusercontent.com/ahmetb/kubectx/master/kubectx -o /usr
     && chmod +x /usr/local/bin/kubectx /usr/local/bin/kubens
 
 # k9s
-RUN curl -L https://github.com/derailed/k9s/releases/download/v${K9S_VERSION}/k9s_Linux_x86_64.tar.gz -o /tmp/k9s.tar.gz \
+RUN curl -L https://github.com/derailed/k9s/releases/download/v${K9S_VERSION}/k9s_v${K9S_VERSION}_Linux_x86_64.tar.gz -o /tmp/k9s.tar.gz \
   && tar -xf /tmp/k9s.tar.gz \
   && chmod +x k9s \
   && mv k9s /usr/local/bin/

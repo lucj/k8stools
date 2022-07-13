@@ -2,12 +2,12 @@ FROM ubuntu:18.04
 
 # Tools versions
 # https://dl.k8s.io/release/stable.txt
-ARG KUBECTL_VERSION=1.21.1
+ARG KUBECTL_VERSION=1.24.2
 # https://github.com/helm/helm/releases
 ARG HELM2_VERSION=2.17.0
-ARG HELM3_VERSION=3.5.4
+ARG HELM3_VERSION=3.9.1
 # https://github.com/derailed/k9s/releases
-ARG K9S_VERSION=0.24.10
+ARG K9S_VERSION=0.25.21
 
 # Install utilities
 RUN apt-get update -y && apt-get install -y curl jq ca-certificates git vim bash-completion

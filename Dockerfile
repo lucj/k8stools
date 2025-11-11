@@ -1,21 +1,21 @@
-FROM ubuntu:18.04
+FROM alpine:3.22
 
 # Tools versions
-ARG KUBECTL_VERSION=1.18.0
-ARG HELM2_VERSION=2.16.3
-ARG HELM3_VERSION=3.1.0
-ARG K9S_VERSION=0.19.0
+# https://dl.k8s.io/release/stable.txt
+ARG KUBECTL_VERSION=1.34.1
+# https://github.com/helm/helm/releases
+ARG HELM_VERSION=3.19.1
+# https://github.com/derailed/k9s/releases
+ARG K9S_VERSION=0.50.16
 
 # Install utilities
-RUN apt-get update -y && apt-get install -y curl jq ca-certificates git vim bash-completion
+RUN apk add -u curl jq ca-certificates git bash bash-completion
 
 # kubectl with bash completion
-RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl \
+RUN curl -LO https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl \
     && chmod +x ./kubectl \
     && mv ./kubectl /usr/local/bin/kubectl \
-    && kubectl completion bash > /etc/bash_completion.d/kubectl \
-    && echo "source /etc/bash_completion" >> ~/.bashrc \
-    && echo "source /etc/bash_completion.d/kubectl" >> ~/.bashrc
+    && echo 'source <(kubectl completion bash)' >>~/.bashrc
 
 # kubectl aliases
 RUN curl https://raw.githubusercontent.com/ahmetb/kubectl-aliases/master/.kubectl_aliases -o /root/.aliases \
@@ -27,7 +27,7 @@ RUN curl https://raw.githubusercontent.com/ahmetb/kubectx/master/kubectx -o /usr
     && chmod +x /usr/local/bin/kubectx /usr/local/bin/kubens
 
 # k9s
-RUN curl -L https://github.com/derailed/k9s/releases/download/v${K9S_VERSION}/k9s_Linux_x86_64.tar.gz -o /tmp/k9s.tar.gz \
+RUN curl -L https://github.com/derailed/k9s/releases/download/v${K9S_VERSION}/k9s_Linux_amd64.tar.gz -o /tmp/k9s.tar.gz \
   && tar -xf /tmp/k9s.tar.gz \
   && chmod +x k9s \
   && mv k9s /usr/local/bin/
@@ -37,16 +37,10 @@ RUN curl https://raw.githubusercontent.com/jonmosco/kube-ps1/master/kube-ps1.sh 
     && echo "source /usr/local/bin/kube-ps1.sh" >> ~/.bashrc \
     && echo "export PS1='[\u@\h \W \$(kube_ps1)] \$ '" >> ~/.bashrc
 
-# Install Helm 3 client
-RUN curl -O https://get.helm.sh/helm-v${HELM3_VERSION}-linux-amd64.tar.gz \
-    && tar -xvf helm-v${HELM3_VERSION}-linux-amd64.tar.gz \
-    && cp linux-amd64/helm /usr/local/bin/helm3 \
-    && rm -rf linux-amd64
-
-# Install Helm 2 client
-RUN curl -O https://get.helm.sh/helm-v${HELM2_VERSION}-linux-amd64.tar.gz \
-    && tar -xvf helm-v${HELM2_VERSION}-linux-amd64.tar.gz \
-    && cp linux-amd64/helm /usr/local/bin/helm2 \
+# Install Helm client
+RUN curl -O https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz \
+    && tar -xvf helm-v${HELM_VERSION}-linux-amd64.tar.gz \
+    && cp linux-amd64/helm /usr/local/bin/helm \
     && rm -rf linux-amd64
 
 ENV KUBECONFIG=/kubeconfig

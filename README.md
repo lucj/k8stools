@@ -1,6 +1,6 @@
 ## Purpose
 
-Image containing several usefull tools to interact with a Kubernetes cluster
+Image containing several useful tools to interact with a Kubernetes cluster
 
 ## Content
 
@@ -17,24 +17,27 @@ and the following kubernetes related tools:
 - kubectl aliases (https://github.com/ahmetb/kubectl-aliases)
 - kubectx / kubens (https://github.com/ahmetb/kubectx)
 - kube-ps1 (https://github.com/jonmosco/kube-ps1)
-- helm2 client
-- helm3 client
+- helm client
 - k9s
+
+Latest version (1.34.1) contains the following components:
+
+- kubectl: 1.34.1
+- helm: 3.19.1
+- k9s: 0.50.16
 
 ## Usage
 
 The following command run a bash shell in a container based on the k8stools images
 
-```
-$ docker run -ti \
-  -v PATH_TO_KUBE_CONFIG:/kubeconfig \
-  lucj/k8stools:TAG
+```bash
+docker run -ti -v PATH_TO_KUBE_CONFIG:/kubeconfig lucj/k8stools:1.34.1
 ```
 
 Once in the shell, you can run any *kubectl* commands against the cluster corresponding to the kubeconfig file provided.
 
 The great *k9s* tool is available, just run it with
 
-```
-$ k9s
+```bash
+k9s
 ```
